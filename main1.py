@@ -12,9 +12,8 @@ def DNAgenerator(length):
 def DNAchanger(s, persent):
     inds = list(range(1,len(s)))
     for i in range(int(persent * len(s))):
-        cur_ind = 5
+        cur_ind = inds.pop(inds.index(random.choice(inds)))
         s = s[:cur_ind-1] + random.choice('ACTG') + s[cur_ind:]
-        cur_ind = 7
         s = s[:cur_ind - 1] + random.choice('ACTG') + s[cur_ind:]
 
     return s
