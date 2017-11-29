@@ -1,20 +1,26 @@
-from math import inf
-for k in range(max(M, N)):
-    if R[d][k] > - inf:
-        L = k
-        break
+import random
 
-for k in reversed(range(max(M, N))):
-    if R[d][k] > - inf:
-        U = k
-        break
+def DNAgenerator(length):
+    s = ''
+    for i in range(length):
+        s += random.choice('ACTG')
+    return s
 
-for k in reversed(range(max(M, N))):
-    if R[d][k] == N + k:
-        L = max(L, k + 2)
-        break
+# print(DNAgenerator(10))
 
-for k in range(max(M, N)):
-    if R[d][k] == M:
-        U = min(U, k - 2)
-        break
+
+def DNAchanger(s, persent):
+    inds = list(range(1,len(s)))
+    for i in range(int(persent * len(s))):
+        cur_ind = 5
+        s = s[:cur_ind-1] + random.choice('ACTG') + s[cur_ind:]
+        cur_ind = 7
+        s = s[:cur_ind - 1] + random.choice('ACTG') + s[cur_ind:]
+
+    return s
+
+
+dna = DNAgenerator(100)
+# print(dna)
+# print(DNAchanger(dna, 0.25))
+
