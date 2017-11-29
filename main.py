@@ -32,6 +32,8 @@ def Greedy(a, b):
 
     while L <= U + 2:
         d += 1
+        if d> min(M,N):
+            return TPrime
         dprime = int(max((d - int((X + mat / 2) / (mat - mis)) - 1), 0))
 
         for k in range(max(0, L - 1), U + 1):
@@ -50,7 +52,6 @@ def Greedy(a, b):
 
             i = max(firstI, max(secondI, thirdI))
             j = i - k
-
             if (i > -inf) and (SPrime(i, j, d) >= (T[dprime] - X)):
 
                 while (i < M - 1) and (j < N - 1) and (a[i] == b[j]):
@@ -88,6 +89,6 @@ def Greedy(a, b):
 lst = []
 for _ in range(100):
     a = main1.DNAgenerator(40)
-    b = main1.DNAchanger(a, 0.25)
+    b = main1.DNAchanger(a, 0.1)
     lst.append(Greedy(a, b))
 print(sorted(lst))
