@@ -8,7 +8,7 @@ def Greedy(a, b):
     mat = 4
     mis = -2
     ind = -4
-    X = 6 # max difference after which we do not involve current in next score
+    X = 2**(abs(M-N)+1) # max difference after which we do not involve current in next score
 
     def SPrime(i, j, d):
         """
@@ -18,16 +18,15 @@ def Greedy(a, b):
         :param d: num of dif
         :return: score
         """
-        return ((i + j) * mat / 2) - d * (mat - mis)  # can be done like lambda
+        return ((i + j + 2) * mat / 2) - d * (mat - mis)  # can be done like lambda
 
     i = 0
-    R = [[-inf] * (max(M, N) + 1) for _ in range(max(M, N) + 1)]
-    T = [0 for _ in range(max(M, N) + 1)] # all best results
+    R = [{i:-inf for i in range(-max(M, N), max(M, N) + 1)} for _ in range(max(M, N) + 1)]
+    T = [0 for _ in range(max(M, N) + 1)]  # all best results
 
-
-    while (i < min(M, N)) and (a[i] == b[i]): # cuts same beginning
+    while (i < min(M, N)) and (a[i] == b[i]):  # cuts same beginning
         i += 1
-    if i == min(M, N): # if on edna is a part of another return max score
+    if i == min(M, N):  # if on edna is a part of another return max score
         return mat * min(M, N) * 1.0
     R[0][0] = i
 
@@ -40,11 +39,14 @@ def Greedy(a, b):
 
     while L <= U + 2:
         d += 1
-        if d > min(M,N): # there is no sense to count more difs then nucls in dna
+        if d > max(M, N):  # there is no sense to count more difs then nucls in dna
             return TPrime
         dprime = int(max((d - int((X + mat / 2) / (mat - mis)) - 1), 0))
+        if d == 2:
+            print("Hello world")
 
-        for k in range(max(0, L - 1), U + 1):
+        for k in range(L - 1, U + 2):
+
             firstI = -inf
             secondI = -inf
             thirdI = -inf
@@ -62,45 +64,47 @@ def Greedy(a, b):
             j = i - k
             if (i > -inf) and (SPrime(i, j, d) >= (T[dprime] - X)):
                 # if cell is not empty and the score is good enough ^ strip next identical part
-
+                # print("Hello there")
                 while (i < M - 1) and (j < N - 1) and (a[i] == b[j]):
                     i += 1
                     j += 1
                 R[d][k] = i
+                # print(R[d][k],d,k,i)
                 TPrime = max(TPrime, SPrime(i, j, d))
             else:
+                # print(R[d][k], d, k, i)
                 R[d][k] = -inf
 
         T[d] = TPrime
 
-        for k in range(max(M, N)):
+        for k in range(-max(M, N), max(M, N)+1):
             if R[d][k] > - inf:
                 L = k
                 break
 
-        for k in reversed(range(max(M, N))):
+        for k in reversed(range(-max(M, N), max(M, N)+1)):
             if R[d][k] > - inf:
                 U = k
                 break
 
-        for k in reversed(range(max(M, N))):
+        for k in reversed(range(-max(M, N), max(M, N)+1)):
             if R[d][k] == N + k:
                 L = max(L, k + 2)
                 break
 
-        for k in range(max(M, N)):
+        for k in range(-max(M, N), max(M, N)+1):
             if R[d][k] == M:
                 U = min(U, k - 2)
                 break
     return TPrime
 
-
-a = "AACCTTGGAACCTTGCG"
-b = "AACCTTGGAACCTTGG"
-print(Greedy(a, b))
-# lst = []
-# for _ in range(100):
-#     a = main1.DNAgenerator(40)
-#     b = main1.DNAchanger(a, 0.1)
-#     lst.append(Greedy(a, b))
-# print(sorted(lst))
+#
+# a = "AACCTABdfgCDTGGAACCTTGG"
+# b = "AACCTTGGAACCTAGG"
+# print(Greedy(a, b))
+lst = []
+for _ in range(100):
+    a = main1.DNAgenerator(40)
+    b = main1.DNAchanger(a, 0.1)
+    lst.append(Greedy(a, b))
+print(sorted(lst))
