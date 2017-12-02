@@ -13,9 +13,10 @@ def DNAchanger(s, persent):
     inds = list(range(1,len(s)))
     for i in range(int(persent * len(s))):
         cur_ind = inds.pop(inds.index(random.choice(inds)))
-        s = s[:cur_ind-1] + random.choice('ACTG') + s[cur_ind:]
-        s = s[:cur_ind - 1] + random.choice('ACTG') + s[cur_ind:]
-
+        if random.choice([True,False]):
+            s = s[:cur_ind-1] + random.choice('ACTG'.replace(s[cur_ind - 1], "")) + s[cur_ind:]
+        else:
+            s = s[:cur_ind] + random.choice('ACTG') + s[cur_ind:]
     return s
 
 
