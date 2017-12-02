@@ -8,7 +8,7 @@ def Greedy(a, b):
     mat = 4
     mis = -2
     ind = -4
-    X = 2**(abs(M-N)+1) # max difference after which we do not involve current in next score
+    X = 2**(abs(M-N)+1)+max(M,N)/8 # max difference after which we do not involve current in next score
 
     def SPrime(i, j, d):
         """
@@ -30,7 +30,7 @@ def Greedy(a, b):
         return mat * min(M, N) * 1.0
     R[0][0] = i
 
-    TPrime = SPrime(i, i, 0)
+    TPrime = SPrime(i-1, i-1, 0)
 
     T[0] = TPrime
     d = 0
@@ -42,8 +42,6 @@ def Greedy(a, b):
         if d > max(M, N):  # there is no sense to count more difs then nucls in dna
             return TPrime
         dprime = int(max((d - int((X + mat / 2) / (mat - mis)) - 1), 0))
-        if d == 2:
-            print("Hello world")
 
         for k in range(L - 1, U + 2):
 
@@ -98,13 +96,13 @@ def Greedy(a, b):
                 break
     return TPrime
 
-#
-# a = "AACCTABdfgCDTGGAACCTTGG"
-# b = "AACCTTGGAACCTAGG"
+
+# a = "AACCTXXGAACCTTGG"
+# b = "AACCTTGGAACCTTGG"
 # print(Greedy(a, b))
 lst = []
 for _ in range(100):
-    a = main1.DNAgenerator(40)
+    a = main1.DNAgenerator(80)
     b = main1.DNAchanger(a, 0.1)
     lst.append(Greedy(a, b))
 print(sorted(lst))
